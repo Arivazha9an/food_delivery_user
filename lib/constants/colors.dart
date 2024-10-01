@@ -25,6 +25,16 @@ const Color textColor = Color(0xFF333333); // Dark gray
 const Color textColorSecondary = Color(0xFF666666); // Lighter gray
 const Color textColorTertiary = Color(0xFF999999); // Even lighter gray
 
+// light theme
+const Color darkBlack =Color(0xFF1A1A1A);
+const Color mediumBlack = Color(0xFF333333);
+const Color lightBlack =Color(0xFF666666);
+  
+// dark theme
+const Color white =Color(0xFFE6E6E6);
+const Color mediumWhite = Color(0xFFCCCCCC);
+const Color lightWhite =Color(0xFF666666);
+
 // Error and success colors
 const Color errorColor = Color(0xFFC83232); // Red
 const Color successColor = Color(0xFF008000); // Green

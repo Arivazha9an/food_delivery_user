@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_user/constants/colors.dart';
-import 'package:food_delivery_user/screens/Auth/registration_screen.dart';
 import 'package:food_delivery_user/screens/bottom_nav.dart';
-import 'package:food_delivery_user/screens/homescreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,6 +23,16 @@ class MyApp extends StatelessWidget {
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
+            titleMedium: TextStyle(
+              color: primaryLight,
+              fontSize: 18,
+              fontWeight: FontWeight.normal,
+            ),
+            titleSmall: TextStyle(
+              color: textColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
@@ -33,28 +41,37 @@ class MyApp extends StatelessWidget {
           ),
         ),
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primaryColor: primaryDark,
-          scaffoldBackgroundColor: Colors.black,
+          brightness: Brightness.light,
+          primaryColor: primaryLight,
+          scaffoldBackgroundColor: Colors.white,
           textTheme: const TextTheme(
             titleLarge: TextStyle(
-              color: primaryDark,
+              color: primaryLight,
               fontSize: 24,
               fontWeight: FontWeight.bold,
+            ),
+            titleMedium: TextStyle(
+              color: primaryLight,
+              fontSize: 18,
+              fontWeight: FontWeight.normal,
+            ),
+            titleSmall: TextStyle(
+              color: textColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
             ),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: primaryDark,
+              backgroundColor: primaryLight,
             ),
           ),
         ),
-        themeMode:
-            ThemeMode.system, // Automatically switch between light and dark
+        themeMode: ThemeMode.system,
         home:
             //LoginScreen(),
-            CustomBottomNavigationBar());
-            // RegistrationScreen()
-           // HomePage());
+            const CustomBottomNavigationBar());
+    // RegistrationScreen()
+    // HomePage());
   }
 }

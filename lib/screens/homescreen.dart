@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:food_delivery_user/screens/cart_screen.dart';
+import 'package:food_delivery_user/screens/food_detailpage.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   final List<String> _carouselImages = [
     'assets/images/offer1.jpg',
     'assets/images/offer1.jpg',
@@ -46,8 +47,7 @@ class _HomePageState extends State<HomePage> {
     },
   ];
 
-  
-  List<Map<String, String>> _cartItems = [];
+  final List<Map<String, String>> _cartItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
               Icons.shopping_cart,
               color: _cartItems.isNotEmpty ? Colors.red : Colors.white,
             ),
-            onPressed: () {            
+            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                 'Categories',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                 'Popular Items',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -137,8 +137,9 @@ class _HomePageState extends State<HomePage> {
       }).toList(),
     );
   }
+
   Widget _buildCategories() {
-    return Container(
+    return SizedBox(
       height: 130,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -155,7 +156,8 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 10),
                 Text(
                   _categories[index]['name']!,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.w400),
                 ),
               ],
             ),
@@ -171,46 +173,70 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: _foodItems.map((foodItem) {
           bool isAddedToCart = _cartItems.contains(foodItem);
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            elevation: 2,
-            child: ListTile(
-              contentPadding: const EdgeInsets.all(10),
-              leading: CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage(foodItem['image']!),
-              ),
-              title: Text(
-                foodItem['name']!,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const FoodDetailsPage(
+                    foodName: "Paneer Butter Masala",
+                    price: 199.99,
+                    isVeg: true, // Set to false for non-veg
+                    rating: 4.5,
+                    reviews: [
+                      "Great taste and quality!",
+                      "Loved the spices, will order again!",
+                      "Portion size could be better.",
+                    ],
+                  ),
                 ),
+              );
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-              subtitle: Text(
-                foodItem['price']!,
-                style: TextStyle(
-                  color: Colors.grey[700],
-                  fontSize: 16,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              elevation: 2,
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(10),
+                leading: CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage(foodItem['image']!),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.add_shopping_cart,
-                  color: isAddedToCart ? Colors.red : Colors.grey,
+                title: Text(
+                  foodItem['name']!,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                onPressed: () {
-                  setState(() {
-                    if (isAddedToCart) {
-                      _cartItems.remove(foodItem);
-                    } else {
-                      _cartItems.add(foodItem);
-                    }
-                  });
-                },
+                subtitle: Text(
+                  foodItem['price']!,
+                  style: const TextStyle(
+                    color: Color(0xFF999999),
+                    fontSize: 16,
+                  ),
+                ),
+                trailing: IconButton(
+                  icon: isAddedToCart
+                      ? const Icon(
+                          Icons.shopping_cart,
+                          color: Colors.red,
+                        )
+                      : const Icon(
+                          Icons.shopping_cart_rounded,
+                          color: Colors.grey,
+                        ),
+                  onPressed: () {
+                    setState(() {
+                      if (isAddedToCart) {
+                        _cartItems.remove(foodItem);
+                      } else {
+                        _cartItems.add(foodItem);
+                      }
+                    });
+                  },
+                ),
               ),
             ),
           );

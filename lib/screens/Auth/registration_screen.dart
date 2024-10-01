@@ -175,36 +175,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         const SnackBar(content: Text("Please fill in all fields")),
       );
     } else if (_profileImage == null) {
-      // Ensure the user has selected a profile picture
+     
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please add a profile picture")),
       );
     } else {
-      // Handle registration logic here
+      
       print("User registered: $username, $phone, $address");
     }
   }
 }
 
-void main() {
-  runApp(
-    MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.green, // Light theme primary color
-        brightness: Brightness.light,
-        inputDecorationTheme: InputDecorationTheme(
-          labelStyle: TextStyle(color: Colors.grey[800]), // Light theme label color
-        ),
-      ),
-      darkTheme: ThemeData(
-        primaryColor: Colors.teal, // Dark theme primary color
-        brightness: Brightness.dark,
-        inputDecorationTheme: InputDecorationTheme(
-          labelStyle: TextStyle(color: Colors.grey[400]), // Dark theme label color
-        ),
-      ),
-      themeMode: ThemeMode.system, // Switch between light and dark themes automatically
-      home: RegistrationScreen(),
-    ),
-  );
-}

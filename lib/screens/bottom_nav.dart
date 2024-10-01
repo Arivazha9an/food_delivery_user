@@ -1,9 +1,12 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:food_delivery_user/screens/cart_screen.dart';
 import 'package:food_delivery_user/screens/homescreen.dart';
+import 'package:food_delivery_user/screens/hotel.dart';
+import 'package:food_delivery_user/screens/user_profile_screen.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
+  const CustomBottomNavigationBar({super.key});
+
   @override
   _CustomBottomNavigationBarState createState() =>
       _CustomBottomNavigationBarState();
@@ -13,18 +16,17 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int _selectedIndex = 0;
   
   final List<Widget> _screens = [
-    HomePage(),
-    SearchScreen(),
-   
-    ProfileScreen(),
-    ProfileScreen(),
+      HomePage(),
+     HotelRestaurantListScreen(),
+      ProfileScreen(),
+      ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
 
-    final List<Color> _iconColors = [
+    final List<Color> iconColors = [
       primaryColor,
       primaryColor,
       primaryColor,
@@ -42,19 +44,19 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: _buildBottomNavIcon(Icons.home, 0, _iconColors),
+            icon: _buildBottomNavIcon(Icons.home, 0, iconColors),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: _buildBottomNavIcon(Icons.food_bank, 1, _iconColors),
+            icon: _buildBottomNavIcon(Icons.food_bank, 1, iconColors),
             label: 'Menu',
           ),
           BottomNavigationBarItem(
-            icon: _buildBottomNavIcon(Icons.person, 2, _iconColors),
+            icon: _buildBottomNavIcon(Icons.person, 2, iconColors),
             label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: _buildBottomNavIcon(Icons.more, 3, _iconColors),
+            icon: _buildBottomNavIcon(Icons.more, 3, iconColors),
             label: 'More',
           ),
         ],
@@ -87,6 +89,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
 
 class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Center(
@@ -101,15 +105,3 @@ class SearchScreen extends StatelessWidget {
 
 
 
-
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Profile Screen',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
