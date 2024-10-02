@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:food_delivery_user/screens/homescreen.dart';
 import 'package:food_delivery_user/screens/hotel.dart';
@@ -14,12 +13,12 @@ class CustomBottomNavigationBar extends StatefulWidget {
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int _selectedIndex = 0;
-  
+
   final List<Widget> _screens = [
-      HomePage(),
-     HotelRestaurantListScreen(),
-      ProfileScreen(),
-      ProfileScreen(),
+    HomePage(),
+    HotelRestaurantListScreen(),
+    ProfileScreen(),
+    ProfileScreen(),
   ];
 
   @override
@@ -32,7 +31,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       primaryColor,
       primaryColor
     ];
-
     return Scaffold(
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -52,19 +50,18 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             label: 'Menu',
           ),
           BottomNavigationBarItem(
-            icon: _buildBottomNavIcon(Icons.person, 2, iconColors),
-            label: 'Profile',
+            icon: _buildBottomNavIcon(Icons.shopping_cart, 2, iconColors),
+            label: 'Orders',
           ),
           BottomNavigationBarItem(
-            icon: _buildBottomNavIcon(Icons.more, 3, iconColors),
-            label: 'More',
+            icon: _buildBottomNavIcon(Icons.person, 3, iconColors),
+            label: 'Profile',
           ),
         ],
       ),
     );
   }
 
-  
   Widget _buildBottomNavIcon(IconData icon, int index, List<Color> colors) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -73,7 +70,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           icon,
           color: _selectedIndex == index ? colors[index] : Colors.grey,
         ),
-        const SizedBox(height: 4), 
+        const SizedBox(height: 4),
         Container(
           width: 6,
           height: 6,
@@ -86,7 +83,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     );
   }
 }
-
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -101,7 +97,3 @@ class SearchScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_user/screens/food_lists.dart';
 
 class HotelRestaurantListScreen extends StatefulWidget {
   const HotelRestaurantListScreen({super.key});
@@ -210,16 +211,25 @@ class _RestaurantCardState extends State<RestaurantCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image Section
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-            child: Image.asset(
-              widget.restaurant.imageUrl,
-              height: 180,
-              width: double.infinity,
-              fit: BoxFit.cover,
+          GestureDetector(
+            onTap: (){
+                  Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>   FoodLists()
+                ),
+              );
+            },
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+              child: Image.asset(
+                widget.restaurant.imageUrl,
+                height: 180,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Padding(
