@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart'; // For the rating bar
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:food_delivery_user/screens/order_confirmation_screen.dart'; // For the rating bar
 
 class FoodDetailsPage extends StatefulWidget {
   final String foodName;
@@ -225,6 +226,14 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
               child: ElevatedButton(
                 onPressed: () {
                   // Implement purchase functionality here
+                   Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>   OrderConfirmationPage(orderID: '1200', totalPrice:(widget.price * quantity),
+                  
+                  ),
+                ),
+              );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:

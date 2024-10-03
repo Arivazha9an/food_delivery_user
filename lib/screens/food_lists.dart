@@ -1,294 +1,278 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_user/screens/cart_screen.dart';
 import 'package:food_delivery_user/screens/food_detailpage.dart';
 
-class FoodItem {
-  final String name;
-  final double price;
-  final double rating;
-  final bool isVeg;
-  final String imageUrl;
-
-  FoodItem({
-    required this.name,
-    required this.price,
-    required this.rating,
-    required this.isVeg,
-    required this.imageUrl,
-  });
-}
-
 class FoodLists extends StatefulWidget {
+  const FoodLists({super.key});
+
   @override
-  _FoodListPageState createState() => _FoodListPageState();
+  State<FoodLists> createState() => _FoodListsState();
 }
 
-class _FoodListPageState extends State<FoodLists> {
-  List<FoodItem> foodItems = [
-    FoodItem(
-      name: 'Paneer Butter Masala',
-      price: 250,
-      rating: 4.5,
-      isVeg: true,
-      imageUrl: 'assets/images/pizza.jpg',
-    ),
-    FoodItem(
-      name: 'Chicken Biryani',
-      price: 300,
-      rating: 4.8,
-      isVeg: false,
-      imageUrl: 'assets/images/pizza.jpg',
-    ),
-    FoodItem(
-      name: 'Dal Makhani',
-      price: 180,
-      rating: 4.0,
-      isVeg: true,
-      imageUrl: 'assets/images/pizza.jpg',
-    ),
-    FoodItem(
-      name: 'Mutton Curry',
-      price: 350,
-      rating: 4.9,
-      isVeg: false,
-      imageUrl: 'assets/images/pizza.jpg',
-    ),
+class _FoodListsState extends State<FoodLists> {
+  final List<Map<String, dynamic>> _foodItems = [
+    {
+      'name': 'Pepperoni Pizza',
+      'price': '400',
+      'image': 'assets/images/pizza.jpg',
+      'isVeg': 'true',
+      'rating': '4.5',
+      'reviews': [
+        "Great taste and quality!",
+        "Loved the spices, will order again!",
+        "Portion size could be better."
+      ]
+    },
+    {
+      'name': 'Cheeseburger',
+      'price': '399',
+      'image': 'assets/images/pizza.jpg',
+      'isVeg': 'true',
+      'rating': '4.4',
+      'reviews': [
+        "Great taste and quality!",
+        "Loved the spices, will order again!",
+        "Portion size could be better."
+      ]
+    },
+    {
+      'name': 'Chicken Sushi',
+      'price': '299',
+      'image': 'assets/images/pizza.jpg',
+      'isVeg': 'false',
+      'rating': '4.0',
+      'reviews': [
+        "Great taste and quality!",
+        "Loved the spices, will order again!",
+        "Portion size could be better."
+      ]
+    },
+    {
+      'name': 'Chocolate Cake',
+      'price': '159',
+      'image': 'assets/images/pizza.jpg',
+      'isVeg': 'true',
+      'rating': '3.8',
+      'reviews': [
+        "Great taste and quality!",
+        "Loved the spices, will order again!",
+        "Portion size could be better."
+      ]
+    },
   ];
 
-  bool isVegFilter = false;
-  bool isNonVegFilter = false;
-  double minRating = 0.0;
+  final List<Map<String, dynamic>> _cartItems = [];
+  String? _selectedFilter;
+  List<Map<String, dynamic>> _filteredItems = [];
 
-  List<FoodItem> get filteredFoodItems {
-    return foodItems.where((item) {
-      if (isVegFilter && !item.isVeg) return false;
-      if (isNonVegFilter && item.isVeg) return false;
-      if (item.rating < minRating) return false;
-      return true;
-    }).toList();
+  @override
+  void initState() {
+    super.initState();
+    _filteredItems = _foodItems; // Initially display all items
   }
 
-  void _showFilterOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setModalState) {
-            return Container(
-              padding: EdgeInsets.all(20),
-              height: 300,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Filter by',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CheckboxListTile(
-                          title: Text('Veg'),
-                          value: isVegFilter,
-                          onChanged: (value) {
-                            setModalState(() {
-                              isVegFilter = value ?? false;
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: CheckboxListTile(
-                          title: Text('Non-Veg'),
-                          value: isNonVegFilter,
-                          onChanged: (value) {
-                            setModalState(() {
-                              isNonVegFilter = value ?? false;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Text('Minimum Rating: ${minRating.toStringAsFixed(1)}'),
-                  Slider(
-                    value: minRating,
-                    min: 0.0,
-                    max: 5.0,
-                    divisions: 10,
-                    label: minRating.toStringAsFixed(1),
-                    onChanged: (value) {
-                      setModalState(() {
-                        minRating = value;
-                      });
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {});
-                        Navigator.pop(context);
-                      },
-                      child: Text('Apply Filters'),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
+  void _applyFilter(String? filter) {
+    setState(() {
+      _selectedFilter = filter;
+      if (filter == 'Veg') {
+        _filteredItems =
+            _foodItems.where((item) => item['isVeg'] == 'true').toList();
+      } else if (filter == 'Non-Veg') {
+        _filteredItems =
+            _foodItems.where((item) => item['isVeg'] == 'false').toList();
+      } else if (filter == 'Low Price') {
+        _filteredItems = _foodItems
+          ..sort((a, b) => int.parse(a['price']).compareTo(int.parse(b['price'])));
+      } else if (filter == 'High Rating') {
+        _filteredItems = _foodItems
+          ..sort((a, b) => double.parse(b['rating']).compareTo(double.parse(a['rating'])));
+      } else {
+        _filteredItems = _foodItems; // Show all items if no filter is selected
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Food List'),
+        title: const Text('Food Delivery'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.filter_list),
+            icon: Icon(
+              Icons.shopping_cart,
+              color: _cartItems.isNotEmpty ? Colors.red : Colors.white,
+            ),
             onPressed: () {
-              _showFilterOptions(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CartScreen(
+                    cartItems: _cartItems,
+                  ),
+                ),
+              );
             },
           ),
         ],
       ),
       body: Column(
         children: [
-          // Filter Button
+          _buildFilterBar(),
+          Expanded(child: _buildFoodDetails()),
+        ],
+      ),
+    );
+  }
 
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredFoodItems.length,
-              itemBuilder: (context, index) {
-                final foodItem = filteredFoodItems[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 16.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          blurRadius: 10,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Food Image
-                        GestureDetector(
-                          onTap: (){
-                             Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>   FoodDetailsPage(foodName: '', price: foodItem.price
-                  , isVeg: foodItem.isVeg, rating: foodItem.rating, reviews: [],)
-                ),
-              );
-                          },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15),
-                                topRight: Radius.circular(15)),
-                            child: Image.asset(
-                              foodItem.imageUrl,
-                              width: double.infinity,
-                              height: 180,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Veg/Non-Veg Indicator
-                              Icon(
-                                foodItem.isVeg ? Icons.circle : Icons.circle,
-                                color:
-                                    foodItem.isVeg ? Colors.green : Colors.red,
-                                size: 20,
-                              ),
-                              SizedBox(width: 8),
-                              // Food Name & Price
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      foodItem.name,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      '₹${foodItem.price.toStringAsFixed(2)}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[700],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // Rating
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.star,
-                                          color: Colors.yellow, size: 20),
-                                      SizedBox(width: 2),
-                                      Text(
-                                        '${foodItem.rating}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Add to cart functionality
-                                    },
-                                    child: Text('Add to Cart'),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+  Widget _buildFilterBar() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Wrap(
+        spacing: 8.0,
+        runSpacing: 4.0,
+        children: [
+          ChoiceChip(
+            label: const Text('All'),
+            selected: _selectedFilter == null,
+            onSelected: (_) => _applyFilter(null),
+          ),
+          ChoiceChip(
+            label: const Text('Veg'),
+            selected: _selectedFilter == 'Veg',
+            onSelected: (_) => _applyFilter('Veg'),
+          ),
+          ChoiceChip(
+            label: const Text('Non-Veg'),
+            selected: _selectedFilter == 'Non-Veg',
+            onSelected: (_) => _applyFilter('Non-Veg'),
+          ),
+          ChoiceChip(
+            label: const Text('Low Price'),
+            selected: _selectedFilter == 'Low Price',
+            onSelected: (_) => _applyFilter('Low Price'),
+          ),
+          ChoiceChip(
+            label: const Text('High Rating'),
+            selected: _selectedFilter == 'High Rating',
+            onSelected: (_) => _applyFilter('High Rating'),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFoodDetails() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: _filteredItems.map((foodItem) {
+          bool isAddedToCart = _cartItems.contains(foodItem);
+          double price = double.parse(foodItem['price']!);
+          double rating = double.parse(foodItem['rating']!);
+          bool isVeg = foodItem['isVeg']!.toLowerCase() == 'true';
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => FoodDetailsPage(
+                    foodName: foodItem['name']!,
+                    price: price,
+                    isVeg: isVeg,
+                    rating: rating,
+                    reviews: foodItem['reviews']!,
+                  ),
+                ),
+              );
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: const EdgeInsets.symmetric(vertical: 12),
+              elevation: 2,
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(8),
+                leading: CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage(foodItem['image']!),
+                ),
+                title: Row(
+                  children: [
+                    Icon(
+                      Icons.circle,
+                      color: foodItem['isVeg'] == 'true'
+                          ? Colors.green
+                          : Colors.red,
+                      size: 16,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      foodItem['name']!,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+                subtitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "₹ ${foodItem['price']!}",
+                      style: const TextStyle(
+                          color: Color(0xFF999999),
+                          fontSize: 16,
+                          letterSpacing: 0.2),
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                          size: 20,
+                        ),
+                        Text(
+                          foodItem['rating']!,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 59, 59, 59),
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                trailing: IconButton(
+                  icon: isAddedToCart
+                      ? const Icon(
+                          CupertinoIcons.cart_fill,
+                          color: Colors.red,
+                        )
+                      : const Icon(
+                          CupertinoIcons.cart_badge_plus,
+                          color: Colors.grey,
+                        ),
+                  onPressed: () {
+                    setState(() {
+                      if (isAddedToCart) {
+                        _cartItems.remove(foodItem);
+                      } else {
+                        _cartItems.add(foodItem);
+                      }
+                    });
+                  },
+                ),
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

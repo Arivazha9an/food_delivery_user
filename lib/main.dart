@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_user/constants/colors.dart';
-import 'package:food_delivery_user/screens/bottom_nav.dart';
+import 'package:food_delivery_user/screens/Auth/login.dart';
+import 'package:food_delivery_user/screens/Auth/registration_screen.dart';
+import 'package:food_delivery_user/screens/IntroScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -70,9 +72,12 @@ class MyApp extends StatelessWidget {
         ),
         themeMode: ThemeMode.system,
         home:
-            //LoginScreen(),
-            const CustomBottomNavigationBar());
-    // RegistrationScreen()
+        RegistrationScreen()
+           // LoginScreen(),
+           // const CustomBottomNavigationBar()
+       //  IntroScreen()
+         );
+    
     // HomePage());
   }
 }

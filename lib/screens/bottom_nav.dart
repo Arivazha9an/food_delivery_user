@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_user/screens/Orders.dart';
 import 'package:food_delivery_user/screens/homescreen.dart';
 import 'package:food_delivery_user/screens/hotel.dart';
 import 'package:food_delivery_user/screens/user_profile_screen.dart';
@@ -17,7 +18,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   final List<Widget> _screens = [
     HomePage(),
     HotelRestaurantListScreen(),
-    ProfileScreen(),
+    OrdersPage(),
     ProfileScreen(),
   ];
 

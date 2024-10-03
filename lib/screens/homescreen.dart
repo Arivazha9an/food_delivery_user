@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:food_delivery_user/screens/cart_screen.dart';
@@ -24,30 +25,58 @@ class _HomePageState extends State<HomePage> {
     {'name': 'Desserts', 'image': 'assets/images/pizza.jpg'},
   ];
 
-  final List<Map<String, String>> _foodItems = [
+  final List<Map<String, dynamic>> _foodItems = [
     {
       'name': 'Pepperoni Pizza',
-      'price': '\$12.99',
-      'image': 'assets/images/pizza.jpg'
+      'price': '400',
+      'image': 'assets/images/pizza.jpg',
+      'isVeg': 'true',
+      'rating': '4.5',
+      'reviews': [
+      "Great taste and quality!",
+      "Loved the spices, will order again!",
+      "Portion size could be better."
+    ]
     },
     {
       'name': 'Cheeseburger',
-      'price': '\$10.99',
-      'image': 'assets/images/pizza.jpg'
+      'price': '399',
+      'image': 'assets/images/pizza.jpg',
+      'isVeg': 'true',
+      'rating': '4.4',
+      'reviews': [
+      "Great taste and quality!",
+      "Loved the spices, will order again!",
+      "Portion size could be better."
+    ]
     },
     {
       'name': 'Chicken Sushi',
-      'price': '\$8.99',
-      'image': 'assets/images/pizza.jpg'
+      'price': '299',
+      'image': 'assets/images/pizza.jpg',
+      'isVeg': 'false',
+      'rating': '4.0',
+     'reviews': [
+      "Great taste and quality!",
+      "Loved the spices, will order again!",
+      "Portion size could be better."
+    ]
     },
     {
       'name': 'Chocolate Cake',
-      'price': '\$5.99',
-      'image': 'assets/images/pizza.jpg'
+      'price': '159',
+      'image': 'assets/images/pizza.jpg',
+      'isVeg': 'true',
+      'rating': '3.8',
+      'reviews': [
+      "Great taste and quality!",
+      "Loved the spices, will order again!",
+      "Portion size could be better."
+    ]
     },
   ];
 
-  final List<Map<String, String>> _cartItems = [];
+  final List<Map<String, dynamic>> _cartItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -173,21 +202,19 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: _foodItems.map((foodItem) {
           bool isAddedToCart = _cartItems.contains(foodItem);
+          double price = double.parse(foodItem['price']!);
+          double rating = double.parse(foodItem['rating']!);
+          bool isVeg = foodItem['isVeg']!.toLowerCase() == 'true';
           return GestureDetector(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const FoodDetailsPage(
-                    foodName: "Paneer Butter Masala",
-                    price: 199.99,
-                    isVeg: true, // Set to false for non-veg
-                    rating: 4.5,
-                    reviews: [
-                      "Great taste and quality!",
-                      "Loved the spices, will order again!",
-                      "Portion size could be better.",
-                    ],
-                  ),
+                  builder: (context) => FoodDetailsPage(
+                      foodName: foodItem['name']!,
+                      price: price,
+                      isVeg: isVeg, // Set to false for non-veg
+                      rating: rating,
+                      reviews: foodItem['reviews']!),
                 ),
               );
             },
@@ -195,36 +222,71 @@ class _HomePageState extends State<HomePage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 12),
               elevation: 2,
               child: ListTile(
-                contentPadding: const EdgeInsets.all(10),
+                contentPadding: const EdgeInsets.all(8),
                 leading: CircleAvatar(
                   radius: 30,
                   backgroundImage: AssetImage(foodItem['image']!),
                 ),
-                title: Text(
-                  foodItem['name']!,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
+                title: Row(
+                  children: [
+                    Icon(
+                      Icons.circle,
+                      color: foodItem['isVeg'] == 'true'
+                          ? Colors.green
+                          : Colors.red,
+                      size: 16,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      foodItem['name']!,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
                 ),
-                subtitle: Text(
-                  foodItem['price']!,
-                  style: const TextStyle(
-                    color: Color(0xFF999999),
-                    fontSize: 16,
-                  ),
+                subtitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "₹ ${foodItem['price']!}",
+                      style: const TextStyle(
+                          color: Color(0xFF999999),
+                          fontSize: 16,
+                          letterSpacing: 0.2),
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                          size: 20,
+                        ),
+                        Text(
+                          foodItem['rating']!,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 59, 59, 59),
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
                 trailing: IconButton(
                   icon: isAddedToCart
                       ? const Icon(
-                          Icons.shopping_cart,
+                          CupertinoIcons.cart_fill,
                           color: Colors.red,
                         )
                       : const Icon(
-                          Icons.shopping_cart_rounded,
+                          CupertinoIcons.cart_badge_plus,
                           color: Colors.grey,
                         ),
                   onPressed: () {
