@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:food_delivery_user/screens/cart_screen.dart';
 import 'package:food_delivery_user/screens/food_detailpage.dart';
+import 'package:food_delivery_user/screens/food_lists.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +15,68 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? _currentAddress;
+  Position? _currentPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  // Get the current location
+  Future<void> _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    // Request location permissions if needed
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied.');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // Get the current position of the device
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      _currentPosition = position;
+    });
+
+    // Get address from latitude and longitude
+    _getAddressFromLatLng(
+        _currentPosition!.latitude, _currentPosition!.longitude);
+  }
+
+  // Get address from latitude and longitude using reverse geocoding
+  Future<void> _getAddressFromLatLng(double lat, double lng) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   final List<String> _carouselImages = [
     'assets/images/offer1.jpg',
     'assets/images/offer1.jpg',
@@ -33,10 +98,10 @@ class _HomePageState extends State<HomePage> {
       'isVeg': 'true',
       'rating': '4.5',
       'reviews': [
-      "Great taste and quality!",
-      "Loved the spices, will order again!",
-      "Portion size could be better."
-    ]
+        "Great taste and quality!",
+        "Loved the spices, will order again!",
+        "Portion size could be better."
+      ]
     },
     {
       'name': 'Cheeseburger',
@@ -45,10 +110,10 @@ class _HomePageState extends State<HomePage> {
       'isVeg': 'true',
       'rating': '4.4',
       'reviews': [
-      "Great taste and quality!",
-      "Loved the spices, will order again!",
-      "Portion size could be better."
-    ]
+        "Great taste and quality!",
+        "Loved the spices, will order again!",
+        "Portion size could be better."
+      ]
     },
     {
       'name': 'Chicken Sushi',
@@ -56,11 +121,11 @@ class _HomePageState extends State<HomePage> {
       'image': 'assets/images/pizza.jpg',
       'isVeg': 'false',
       'rating': '4.0',
-     'reviews': [
-      "Great taste and quality!",
-      "Loved the spices, will order again!",
-      "Portion size could be better."
-    ]
+      'reviews': [
+        "Great taste and quality!",
+        "Loved the spices, will order again!",
+        "Portion size could be better."
+      ]
     },
     {
       'name': 'Chocolate Cake',
@@ -69,10 +134,10 @@ class _HomePageState extends State<HomePage> {
       'isVeg': 'true',
       'rating': '3.8',
       'reviews': [
-      "Great taste and quality!",
-      "Loved the spices, will order again!",
-      "Portion size could be better."
-    ]
+        "Great taste and quality!",
+        "Loved the spices, will order again!",
+        "Portion size could be better."
+      ]
     },
   ];
 
@@ -81,29 +146,31 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Food Delivery'),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.shopping_cart,
-              color: _cartItems.isNotEmpty ? Colors.red : Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CartScreen(
-                    cartItems: _cartItems,
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: Text(_currentAddress ?? 'Fetching location...'), // Update here
+      //   centerTitle: true,
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   actions: [
+      //     IconButton(
+      //       icon: Icon(
+      //         Icons.shopping_cart,
+      //         color: _cartItems.isNotEmpty ? Colors.red : Colors.white,
+      //       ),
+      //       onPressed: () {
+      //         Navigator.push(
+      //           context,
+      //           MaterialPageRoute(
+      //             builder: (context) => CartScreen(
+      //               cartItems: _cartItems,
+      //             ),
+
+
+      //           ),
+      //         );
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,9 +245,18 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage(_categories[index]['image']!),
+                InkWell(
+                  onTap: (){
+                     Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => FoodLists( )
+                ),
+              );
+                  },
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundImage: AssetImage(_categories[index]['image']!),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -212,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => FoodDetailsPage(
                       foodName: foodItem['name']!,
                       price: price,
-                      isVeg: isVeg, // Set to false for non-veg
+                      isVeg: isVeg,
                       rating: rating,
                       reviews: foodItem['reviews']!),
                 ),

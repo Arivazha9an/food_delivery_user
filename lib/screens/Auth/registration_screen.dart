@@ -1,15 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_user/constants/colors.dart';
+import 'package:food_delivery_user/screens/Auth/login.dart';
+import 'package:food_delivery_user/screens/startscreens/IntroScreen.dart';
 import 'package:food_delivery_user/widgets/custom_textfield.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({super.key});
+
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
- 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -24,10 +29,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("User Registration"),
-        centerTitle: true,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -36,7 +37,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             children: [
               const SizedBox(height: 20),
               Text(
-                "Register",
+                "Sign Up",
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -49,13 +50,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               CustomTextfield(
                 controller: _usernameController,
                 label: "Username",
-                icon: Icons.person, keyboardType: TextInputType.text,
+                icon: Icons.person,
+                keyboardType: TextInputType.text,
               ),
               const SizedBox(height: 16),
-               CustomTextfield(
+              CustomTextfield(
                 controller: _emailController,
                 label: "Email",
-                icon: Icons.person, keyboardType: TextInputType.emailAddress,
+                icon: Icons.person,
+                keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
               _buildPasswordField(),
@@ -67,7 +70,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 16),
-               CustomTextfield(
+              CustomTextfield(
                 controller: _addressController,
                 label: "Delivery Address",
                 icon: Icons.location_on,
@@ -78,15 +81,40 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     _registerUser();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            IntroScreen(), // Replace with the screen you want to navigate to
+                      ),
+                    );
                   },
-                  child: const Text("Register"),
                   style: ElevatedButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 40, vertical: 15), backgroundColor: Theme.of(context).primaryColor,
-                    textStyle: const TextStyle(fontSize: 16), 
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
+                  child: const Text(
+                    "Sign Up",
+                    style: TextStyle(color: white),
                   ),
                 ),
               ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                const SizedBox(
+                  width: 30,
+                ),
+                const Text('Already Have an Account ?'),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      );
+                    },
+                    child: const Text('Sign in'))
+              ])
             ],
           ),
         ),
@@ -94,7 +122,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
- 
   Widget _buildProfilePicture(BuildContext context) {
     return Column(
       children: [
@@ -106,7 +133,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             backgroundImage:
                 _profileImage != null ? FileImage(_profileImage!) : null,
             child: _profileImage == null
-                ? Icon(Icons.add_a_photo, size: 50, color: Theme.of(context).primaryColor)
+                ? Icon(Icons.add_a_photo,
+                    size: 50, color: Theme.of(context).primaryColor)
                 : null,
           ),
         ),
@@ -119,7 +147,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -129,10 +156,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
   }
 
-  
- 
-
-  
   Widget _buildPasswordField() {
     return TextField(
       controller: _passwordController,
@@ -156,12 +179,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+          borderSide:
+              BorderSide(color: Theme.of(context).primaryColor, width: 2),
         ),
       ),
     );
   }
-
 
   void _registerUser() {
     String username = _usernameController.text;
@@ -169,20 +192,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     String phone = _phoneController.text;
     String address = _addressController.text;
 
-    if (username.isEmpty || password.isEmpty || phone.isEmpty || address.isEmpty) {
-   
+    if (username.isEmpty ||
+        password.isEmpty ||
+        phone.isEmpty ||
+        address.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please fill in all fields")),
       );
     } else if (_profileImage == null) {
-     
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please add a profile picture")),
       );
     } else {
-      
-      print("User registered: $username, $phone, $address");
+      if (kDebugMode) {
+        print("User registered: $username, $phone, $address");
+      }
     }
   }
 }
-

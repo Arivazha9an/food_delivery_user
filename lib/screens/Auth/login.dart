@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_user/screens/Auth/registration_screen.dart';
+import 'package:food_delivery_user/screens/startscreens/IntroScreen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -14,21 +16,17 @@ class LoginScreen extends StatelessWidget {
           children: [
             Center(
               child: Image.asset(
-                'assets/images/food_login.png', 
+                'assets/images/food_login.png',
                 height: 100,
               ),
             ),
             const SizedBox(height: 30),
-
-          
             Text(
               'Welcome to Food App',
               textAlign: TextAlign.center,
-              style:
-                  Theme.of(context).textTheme.titleLarge, 
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 20),
-   
             const TextField(
               decoration: InputDecoration(
                 labelText: 'Email',
@@ -38,8 +36,6 @@ class LoginScreen extends StatelessWidget {
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
-
-           
             const TextField(
               obscureText: true,
               decoration: InputDecoration(
@@ -49,11 +45,15 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-
-           
             ElevatedButton(
               onPressed: () {
-                
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        IntroScreen(), // Replace with the screen you want to navigate to
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 15),
@@ -67,21 +67,22 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
-
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 TextButton(
-                  onPressed: () {  
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegistrationScreen()),
+                    );
                   },
                   child: const Text('Sign Up'),
                 ),
                 const Text('|'),
                 TextButton(
-                  onPressed: () {
-                    
-                  },
+                  onPressed: () {},
                   child: const Text('Forgot Password?'),
                 ),
               ],

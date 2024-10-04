@@ -3,6 +3,7 @@ import 'package:food_delivery_user/screens/Orders.dart';
 import 'package:food_delivery_user/screens/homescreen.dart';
 import 'package:food_delivery_user/screens/hotel.dart';
 import 'package:food_delivery_user/screens/user_profile_screen.dart';
+import 'package:food_delivery_user/widgets/appbar.dart'; // Ensure to import your FoodAppBar
 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({super.key});
@@ -16,10 +17,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    HomePage(),
-    HotelRestaurantListScreen(),
-    OrdersPage(),
-    ProfileScreen(),
+    const HomePage(), // This should contain the SliverAppBar
+    const HotelRestaurantListScreen(),
+    const OrdersPage(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -32,7 +33,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       primaryColor,
       primaryColor
     ];
+    
     return Scaffold(
+      appBar: _selectedIndex == 0 // Show app bar for HomePage only
+          ? const FoodAppBar() // Show app bar for HomePage
+          : null, // Hide app bar for other screens
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -44,19 +49,19 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         items: [
           BottomNavigationBarItem(
             icon: _buildBottomNavIcon(Icons.home, 0, iconColors),
-            label: 'Home',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: _buildBottomNavIcon(Icons.food_bank, 1, iconColors),
-            label: 'Menu',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: _buildBottomNavIcon(Icons.shopping_cart, 2, iconColors),
-            label: 'Orders',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: _buildBottomNavIcon(Icons.person, 3, iconColors),
-            label: 'Profile',
+            label: '',
           ),
         ],
       ),
@@ -81,20 +86,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Search Screen',
-        style: TextStyle(fontSize: 24),
-      ),
     );
   }
 }

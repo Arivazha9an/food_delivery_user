@@ -32,7 +32,7 @@ class _HotelRestaurantListScreenState extends State<HotelRestaurantListScreen> {
       isVeg: false,
       location: "Highway Road, Spice Town",
       imageUrl: "assets/images/food_palace.jpg",
-      isFavorite: true,
+      isFavorite: false,
     ),
     // Add more restaurants here
   ];
@@ -212,11 +212,9 @@ class _RestaurantCardState extends State<RestaurantCard> {
         children: [
           // Image Section
           GestureDetector(
-            onTap: (){
-                  Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>   FoodLists()
-                ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => FoodLists()),
               );
             },
             child: ClipRRect(

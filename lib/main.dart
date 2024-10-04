@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_user/constants/colors.dart';
 import 'package:food_delivery_user/screens/Auth/login.dart';
-import 'package:food_delivery_user/screens/Auth/registration_screen.dart';
-import 'package:food_delivery_user/screens/IntroScreen.dart';
+import 'package:food_delivery_user/screens/order_tracker_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -72,10 +71,8 @@ class MyApp extends StatelessWidget {
         ),
         themeMode: ThemeMode.system,
         home:
-        RegistrationScreen()
-           // LoginScreen(),
-           // const CustomBottomNavigationBar()
-       //  IntroScreen()
+        //const LoginScreen(),
+        DeliveryStatusPage()
          );
     
     // HomePage());

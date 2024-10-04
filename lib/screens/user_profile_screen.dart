@@ -41,15 +41,15 @@ class ProfileScreen extends StatelessWidget {
                         AssetImage('assets/images/profile_picture.jpg'),
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: IconButton(
-                    icon: Icon(Icons.camera_alt,
-                        color: Theme.of(context).primaryColor),
-                    onPressed: () {},
-                  ),
-                ),
+                // Positioned(
+                //   bottom: 0,
+                //   right: 0,
+                //   child: IconButton(
+                //     icon: Icon(Icons.camera_alt,
+                //         color: Theme.of(context).primaryColor),
+                //     onPressed: () {},
+                //   ),
+                // ),
               ],
             ),
             const SizedBox(height: 20),

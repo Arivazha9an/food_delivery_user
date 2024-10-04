@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_user/screens/bottom_nav.dart';
-import 'package:intro_slider/intro_slider.dart';
+import 'package:food_delivery_user/screens/startscreens/loading.dart';
 import 'package:intro_slider/intro_slider.dart';
 
 class IntroScreen extends StatefulWidget {
   @override
   _IntroScreenState createState() => _IntroScreenState();
 }
-
 class _IntroScreenState extends State<IntroScreen> {
   List<ContentConfig> slides = [];
 
@@ -73,7 +71,7 @@ class _IntroScreenState extends State<IntroScreen> {
  Navigator.pushReplacement(
   context,
   MaterialPageRoute(
-    builder: (context) => CustomBottomNavigationBar(), // Replace with the screen you want to navigate to
+    builder: (context) => LoadingScreen(), // Replace with the screen you want to navigate to
   ),
 );
   }
