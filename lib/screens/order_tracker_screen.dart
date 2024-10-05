@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:food_delivery_user/constants/colors.dart';
@@ -22,6 +23,8 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
   LatLng? deliveryLocation;
   final LatLng restaurantLocation = const LatLng(10.3942, 78.8262);
   final double averageSpeed = 40.0;
+    String speed = "Speed: 0.0 m/s";
+  late StreamSubscription<Position> positionStream;
 
   List<LatLng> polylinePoints = [];
 
@@ -47,33 +50,47 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
   }
 
   Future<void> _getCurrentLocation() async {
-    // Check if location services are enabled
+    
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled, handle this
-      print('Location services are disabled.');
+      
+      if (kDebugMode) {
+        print('Location services are disabled.');
+      }
       return;
     }
 
-    // Request location permission
+   
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
-        // Permissions are denied, handle this
-        print('Location permissions are denied.');
+        
+        if (kDebugMode) {
+          print('Location permissions are denied.');
+        }
         return;
       }
     }
-
-    // Get the current position
+ 
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
-    // Set the current location to the deliveryLocation
+ positionStream = Geolocator.getPositionStream(
+  locationSettings: const LocationSettings( accuracy: LocationAccuracy.high,
+      distanceFilter: 1,),
+     // Minimum distance (in meters) that the device must move before the listener is notified
+    ).listen((Position position) {
+      // Update speed in m/s
+      setState(() {
+        speed = "Speed: ${position.speed} m/s"; // speed is provided in meters/second
+      });
+    });
+
+   
     setState(() {
       deliveryLocation = LatLng(position.latitude, position.longitude);
-      getRouteFromAPI(); // Fetch the route after getting the current location
+      getRouteFromAPI();  
     });
   }
 
@@ -94,18 +111,20 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
 
       setState(() {
         polylinePoints = points;
-        estimatedTime = calculateEstimatedTime(); // Calculate estimated time
+        estimatedTime = calculateEstimatedTime();  
       });
     } else {
-      print('Failed to load route');
+      if (kDebugMode) {
+        print('Failed to load route');
+      }
     }
   }
 
-  //  calculation 4 distance and estimate time
+ 
   String calculateEstimatedTime() {
     final distance = calculateDistance(restaurantLocation, deliveryLocation!);
-    final hours = distance / averageSpeed; // Time = Distance / Speed
-    final minutes = (hours * 60).round(); // Convert to minutes
+    final hours = distance / averageSpeed; 
+    final minutes = (hours * 60).round();  
     return 'Est. Arrival: $minutes mins';
   }
 
@@ -162,7 +181,7 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
           animate: true,
         ),
       ),
-                  ),
+       ),
                   Marker(
                     width: 80.0,
                     height: 80.0,

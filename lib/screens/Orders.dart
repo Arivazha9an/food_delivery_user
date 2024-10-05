@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_user/screens/order_tracker_screen.dart';
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
@@ -61,46 +62,57 @@ class _OrdersPageState extends State<OrdersPage> {
               itemBuilder: (context, index) {
                 final order = _orders[index];
                 return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(8),
-                    leading: CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage(order['image']),
-                    ),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          order['hotelName'],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              color: order['isVeg'] ? Colors.green : Colors.red,
-                              size: 16,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeliveryStatusPage()),
+                      );
+                    },
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(8),
+                      leading: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: AssetImage(order['image']),
+                      ),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            order['hotelName'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
-                            const SizedBox(width: 8),
-                            Text(
-                              order['foodName'],
-                              style: const TextStyle(fontSize: 16),
-                            ),                            
-                          ],
-                        ),
-                      ],
-                    ),
-                    subtitle: Text(
-                      "Price: \₹${order['price']} x ${order['quantity']} = \₹${(order['price'] * order['quantity']).toStringAsFixed(2)}",
-                      style: const TextStyle(color: Colors.grey),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color:
+                                    order['isVeg'] ? Colors.green : Colors.red,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                order['foodName'],
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      subtitle: Text(
+                        "Price: \₹${order['price']} x ${order['quantity']} = \₹${(order['price'] * order['quantity']).toStringAsFixed(2)}",
+                        style: const TextStyle(color: Colors.grey),
+                      ),
                     ),
                   ),
                 );
