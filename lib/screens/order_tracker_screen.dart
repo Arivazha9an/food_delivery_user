@@ -5,10 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:food_delivery_user/constants/colors.dart';
+import 'package:food_delivery_user/widgets/button.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart' as lottie;
+import 'package:url_launcher/url_launcher.dart';
+
 
 class DeliveryStatusPage extends StatefulWidget {
   const DeliveryStatusPage({super.key});
@@ -18,12 +21,27 @@ class DeliveryStatusPage extends StatefulWidget {
 }
 
 class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
+
+    final String phoneNumber = "+91 6369880214"; // Replace with the phone number
+
+  // Function to launch the phone dialer
+  void _callPhoneNumber(String number) async {
+    print(phoneNumber);
+    final Uri telUri = Uri(scheme: 'tel', path: number);
+    if (await canLaunchUrl(telUri)) {
+      await launchUrl(telUri);
+    } else {
+      throw 'Could not launch $number';
+    }
+  }
+
+
+
   double calculateBearing(LatLng start, LatLng end) {
     double startLat = _degreesToRadians(start.latitude);
     double startLng = _degreesToRadians(start.longitude);
     double endLat = _degreesToRadians(end.latitude);
     double endLng = _degreesToRadians(end.longitude);
-     
 
     double dLng = endLng - startLng;
 
@@ -47,7 +65,7 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
   List<LatLng> polylinePoints = [];
 
   StreamSubscription<Position>? locationStreamSubscription;
- bool routeFetched = false;
+  bool routeFetched = false;
 
   @override
   void initState() {
@@ -119,7 +137,7 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
     });
   }
 
- Future<void> getRouteFromAPI() async {
+  Future<void> getRouteFromAPI() async {
     const apiKey = '5b3ce3597851110001cf6248f264660e862a4d1094b32e755d61ef6e';
     final url =
         'https://api.openrouteservice.org/v2/directions/driving-car?api_key=$apiKey&start=${restaurantLocation.longitude},${restaurantLocation.latitude}&end=${deliveryLocation!.longitude},${deliveryLocation!.latitude}';
@@ -153,9 +171,9 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
     return 'Est. Arrival: $minutes mins';
   }
 
-  //  Haversine formula
+  //  Haversine  4mula
   double calculateDistance(LatLng start, LatLng end) {
-    const R = 6371; // Radius of the Earth in kilometers
+    const R = 6371; // Earth in KM
     final dLat = _degreesToRadians(end.latitude - start.latitude);
     final dLon = _degreesToRadians(end.longitude - start.longitude);
     final a = (sin(dLat / 2) * sin(dLat / 2)) +
@@ -164,10 +182,10 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
             sin(dLon / 2) *
             sin(dLon / 2));
     final c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    return R * c; // Distance in kilometers
+    return R * c; // Distance in km
   }
 
-  // Helper method to convert degrees to radians
+  // degrees to radians
   double _degreesToRadians(double degrees) {
     return degrees * (3.141592653589793238 / 180.0);
   }
@@ -270,6 +288,19 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
                     Text(
                       estimatedTime,
                       style: const TextStyle(fontSize: 16),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Call Delivery Man"),
+                        CustomTextButton(
+                            title: '☎',
+                            width: 35,
+                            background: primaryLight,
+                            textColor: white,
+                            fontSize: 18,
+                            onTap:  () => _callPhoneNumber(phoneNumber))
+                      ],
                     ),
                   ],
                 ),

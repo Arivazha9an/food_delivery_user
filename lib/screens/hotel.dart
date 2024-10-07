@@ -5,8 +5,7 @@ class HotelRestaurantListScreen extends StatefulWidget {
   const HotelRestaurantListScreen({super.key});
 
   @override
-  _HotelRestaurantListScreenState createState() =>
-      _HotelRestaurantListScreenState();
+  _HotelRestaurantListScreenState createState() => _HotelRestaurantListScreenState();
 }
 
 class _HotelRestaurantListScreenState extends State<HotelRestaurantListScreen> {
@@ -67,11 +66,13 @@ class _HotelRestaurantListScreenState extends State<HotelRestaurantListScreen> {
     return filtered;
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Hotels & Restaurants"),
+        title: Text("Hotels & Restaurants"),
         actions: [
           IconButton(
             icon: const Icon(Icons.sort),
@@ -86,7 +87,12 @@ class _HotelRestaurantListScreenState extends State<HotelRestaurantListScreen> {
             child: ListView.builder(
               itemCount: filteredRestaurants.length,
               itemBuilder: (context, index) {
-                return RestaurantCard(restaurant: filteredRestaurants[index]);
+                return RestaurantCard(
+                  restaurant: filteredRestaurants[index],
+                  onFavoriteToggle: () {
+                    setState(() {}); // Refresh the widget to update the favorite count
+                  },
+                );
               },
             ),
           ),
@@ -193,8 +199,9 @@ class Restaurant {
 
 class RestaurantCard extends StatefulWidget {
   final Restaurant restaurant;
+  final VoidCallback onFavoriteToggle; // Callback to notify favorite toggle
 
-  const RestaurantCard({super.key, required this.restaurant});
+  const RestaurantCard({super.key, required this.restaurant, required this.onFavoriteToggle});
 
   @override
   _RestaurantCardState createState() => _RestaurantCardState();
@@ -257,9 +264,9 @@ class _RestaurantCardState extends State<RestaurantCard> {
                       ),
                       onPressed: () {
                         setState(() {
-                          widget.restaurant.isFavorite =
-                              !widget.restaurant.isFavorite;
+                          widget.restaurant.isFavorite = !widget.restaurant.isFavorite;
                         });
+                        widget.onFavoriteToggle(); // Notify the parent to update the favorites count
                       },
                     ),
                   ],

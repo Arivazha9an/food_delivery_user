@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:food_delivery_user/screens/food_detailpage.dart';
 import 'package:food_delivery_user/screens/food_lists.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,64 +12,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Position? _currentPosition;
+
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
+    
   }
 
-  // Get the current location
-  Future<void> _getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    // Request location permissions if needed
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied.');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    // Get the current position of the device
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    setState(() {
-      _currentPosition = position;
-    });
-
-    // Get address from latitude and longitude
-    _getAddressFromLatLng(
-        _currentPosition!.latitude, _currentPosition!.longitude);
-  }
-
-  // Get address from latitude and longitude using reverse geocoding
-  Future<void> _getAddressFromLatLng(double lat, double lng) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
-
-      Placemark place = placemarks[0];
-      setState(() {
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
 
   final List<String> _carouselImages = [
     'assets/images/offer1.jpg',
@@ -245,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: (){
                      Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => FoodLists( )
+                  builder: (context) => const FoodLists( )
                 ),
               );
                   },
@@ -335,7 +283,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.star,
                           color: Colors.amber,
                           size: 20,
