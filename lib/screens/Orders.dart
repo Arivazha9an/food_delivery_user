@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:food_delivery_user/screens/order_tracker_screen.dart';
 
@@ -72,7 +73,7 @@ class _OrdersPageState extends State<OrdersPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DeliveryStatusPage()),
+                            builder: (context) => const DeliveryStatusPage()),
                       );
                     },
                     child: ListTile(
@@ -110,7 +111,7 @@ class _OrdersPageState extends State<OrdersPage> {
                         ],
                       ),
                       subtitle: Text(
-                        "Price: \₹${order['price']} x ${order['quantity']} = \₹${(order['price'] * order['quantity']).toStringAsFixed(2)}",
+                        "Price:  ₹${order['price']} x ${order['quantity']} =  ₹${(order['price'] * order['quantity']).toStringAsFixed(2)}",
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ),
@@ -132,7 +133,7 @@ class _OrdersPageState extends State<OrdersPage> {
                   ),
                 ),
                 Text(
-                  '\₹${getTotalPrice().toStringAsFixed(2)}',
+                  ' ₹${getTotalPrice().toStringAsFixed(2)}',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

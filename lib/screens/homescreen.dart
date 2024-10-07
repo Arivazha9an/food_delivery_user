@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:food_delivery_user/screens/cart_screen.dart';
 import 'package:food_delivery_user/screens/food_detailpage.dart';
 import 'package:food_delivery_user/screens/food_lists.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,7 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? _currentAddress;
   Position? _currentPosition;
 
   @override
@@ -69,8 +67,6 @@ class _HomePageState extends State<HomePage> {
 
       Placemark place = placemarks[0];
       setState(() {
-        _currentAddress =
-            "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
       print(e);
