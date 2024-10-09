@@ -12,7 +12,6 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:url_launcher/url_launcher.dart';
 
-
 class DeliveryStatusPage extends StatefulWidget {
   const DeliveryStatusPage({super.key});
 
@@ -21,12 +20,13 @@ class DeliveryStatusPage extends StatefulWidget {
 }
 
 class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
-
-    final String phoneNumber = "+91 6369880214"; // Replace with the phone number
+  final String phoneNumber = "+91 6369880214"; // Replace with the phone number
 
   // Function to launch the phone dialer
   void _callPhoneNumber(String number) async {
-    print(phoneNumber);
+    if (kDebugMode) {
+      print(phoneNumber);
+    }
     final Uri telUri = Uri(scheme: 'tel', path: number);
     if (await canLaunchUrl(telUri)) {
       await launchUrl(telUri);
@@ -34,8 +34,6 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
       throw 'Could not launch $number';
     }
   }
-
-
 
   double calculateBearing(LatLng start, LatLng end) {
     double startLat = _degreesToRadians(start.latitude);
@@ -196,120 +194,132 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
       appBar: AppBar(
         title: const Text('Delivery Status'),
       ),
-      body: Stack(
-        children: [
-          FlutterMap(
-            options: MapOptions(
-                initialCenter: deliveryLocation!,
-                initialZoom: 13,
-                keepAlive: true,
-                backgroundColor: primaryLight),
-            children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              ),
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    width: 80.0,
-                    height: 80.0,
-                    point: deliveryLocation!,
-                    child: polylinePoints.length > 1
-                        ? Transform.rotate(
-                            angle: calculateBearing(
-                                    deliveryLocation!, polylinePoints[1]) *
-                                pi /
-                                131, // Convert degrees to radians
-                            child: SizedBox(
-                              width: 35.0,
-                              height: 35.0,
-                              child: lottie.Lottie.asset(
-                                'assets/animations/map.json', // Your Lottie animation path
-                                repeat: true,
-                                reverse: true,
-                                animate: true,
-                              ),
-                            ),
-                          )
-                        : SizedBox(
-                            width: 40.0,
-                            height: 40.0,
-                            child: lottie.Lottie.asset(
-                              'assets/animations/map.json', // Default animation if no route is available
-                              repeat: true,
-                              reverse: true,
-                              animate: true,
-                            ),
-                          ),
-                  ),
-                  Marker(
-                    width: 40.0,
-                    height: 40.0,
-                    point: restaurantLocation,
-                    child: const Icon(
-                      Icons.person_pin_circle_rounded,
-                      color: Colors.blue,
-                      size: 40.0,
-                    ),
-                  ),
-                ],
-              ),
-              // Polyline Layer (road-following line)
-              PolylineLayer(
-                polylines: [
-                  Polyline(
-                      points: polylinePoints,
-                      strokeWidth: 4.0,
-                      color: primaryLight,
-                      pattern: const StrokePattern.solid(),
-                      strokeCap: StrokeCap.round)
-                ],
-              ),
-            ],
-          ),
-          Positioned(
-            top: 20,
-            left: 16,
-            right: 16,
-            child: Card(
-              margin: const EdgeInsets.all(16.0),
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: deliveryLocation == null
+          ? const Center(
+              child:
+                  CircularProgressIndicator(), // Show a loader until location is available
+            )
+          : Stack(
+              children: [
+                FlutterMap(
+                  options: MapOptions(
+                      initialCenter: deliveryLocation!,
+                      initialZoom: 13,
+                      keepAlive: true,
+                      backgroundColor: primaryLight),
                   children: [
-                    Text(
-                      deliveryStatus,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
+                    TileLayer(
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      estimatedTime,
-                      style: const TextStyle(fontSize: 16),
+                    MarkerLayer(
+                      markers: [
+                        Marker(
+                          width: 80.0,
+                          height: 80.0,
+                          point: deliveryLocation!,
+                          child: polylinePoints.length > 1
+                              ? Transform.rotate(
+                                  angle: calculateBearing(deliveryLocation!,
+                                          polylinePoints[1]) *
+                                      pi /
+                                      360, // Convert degrees to radians
+                                  child: SizedBox(
+                                    width: 35.0,
+                                    height: 35.0,
+                                    child: lottie.Lottie.asset(
+                                      'assets/animations/map.json', // Your Lottie animation path
+                                      repeat: true,
+                                      reverse: true,
+                                      animate: true,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(
+                                  width: 40.0,
+                                  height: 40.0,
+                                  child: lottie.Lottie.asset(
+                                    'assets/animations/map.json', // Default animation if no route is available
+                                    repeat: true,
+                                    reverse: true,
+                                    animate: true,
+                                  ),
+                                ),
+                        ),
+                        Marker(
+                          width: 40.0,
+                          height: 40.0,
+                          point: restaurantLocation,
+                          child: const Icon(
+                            Icons.person_pin_circle_rounded,
+                            color: Colors.blue,
+                            size: 40.0,
+                          ),
+                        ),
+                      ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Call Delivery Man"),
-                        CustomTextButton(
-                            title: '☎',
-                            width: 35,
-                            background: primaryLight,
-                            textColor: white,
-                            fontSize: 18,
-                            onTap:  () => _callPhoneNumber(phoneNumber))
+                    // Polyline Layer (road-following line)
+                    PolylineLayer(
+                      polylines: [
+                        Polyline(
+                            points: polylinePoints,
+                            strokeWidth: 4.0,
+                            color: primaryLight,
+                            pattern: const StrokePattern.solid(),
+                            strokeCap: StrokeCap.round),
                       ],
                     ),
                   ],
                 ),
-              ),
+                Positioned(
+                  top: 20,
+                  left: 16,
+                  right: 16,
+                  child: Card(
+                    color: primaryDark.withOpacity(0.30),
+                    margin: const EdgeInsets.all(16.0),
+                    elevation: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            deliveryStatus,
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: white),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            estimatedTime,
+                            style: const TextStyle(fontSize: 16, color: white),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Call Delivery Man",
+                                style: TextStyle(color: white),
+                              ),
+                              CustomTextButton(
+                                  title: '☎',
+                                  width: 35,
+                                  background: primaryLight,
+                                  textColor: white,
+                                  fontSize: 18,
+                                  onTap: () => _callPhoneNumber(phoneNumber))
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
             ),
-          ),
-          const SizedBox(height: 16),
-        ],
-      ),
     );
   }
 }

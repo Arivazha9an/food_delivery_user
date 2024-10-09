@@ -12,68 +12,65 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Foodie App',
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: primaryLight,
-          scaffoldBackgroundColor: Colors.white,
-          textTheme: const TextTheme(
-            titleLarge: TextStyle(
-              color: primaryLight,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-            titleMedium: TextStyle(
-              color: primaryLight,
-              fontSize: 18,
-              fontWeight: FontWeight.normal,
-            ),
-            titleSmall: TextStyle(
-              color: textColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
+      title: 'Foodie App',
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: primaryLight,
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: primaryLight,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
           ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: primaryLight,
-            ),
+          titleMedium: TextStyle(
+            color: primaryLight,
+            fontSize: 18,
+            fontWeight: FontWeight.normal,
+          ),
+          titleSmall: TextStyle(
+            color: textColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
           ),
         ),
-        darkTheme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: primaryLight,
-          scaffoldBackgroundColor: Colors.white,
-          textTheme: const TextTheme(
-            titleLarge: TextStyle(
-              color: primaryLight,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-            titleMedium: TextStyle(
-              color: primaryLight,
-              fontSize: 18,
-              fontWeight: FontWeight.normal,
-            ),
-            titleSmall: TextStyle(
-              
-              color: textColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: primaryLight,
-            ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryLight,
           ),
         ),
-        themeMode: ThemeMode.system,
-        home:
-        const LoginScreen(),
-       // DeliveryStatusPage()
-         );
-    
-    // HomePage());
-  }
+      ),
+
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: primaryDark,
+        scaffoldBackgroundColor: Colors.black,
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: primaryDark,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+          titleMedium: TextStyle(
+            color: primaryDark,
+            fontSize: 18,
+            fontWeight: FontWeight.normal,
+          ),
+          titleSmall: TextStyle(
+            color: white,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryLight,
+          ),
+        ),
+      ),
+      themeMode: ThemeMode.light,
+      home: const LoginScreen(),     
+     // ProfileScreen()
+    );
+      }
 }

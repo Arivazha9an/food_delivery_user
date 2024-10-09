@@ -72,7 +72,7 @@ class _HotelRestaurantListScreenState extends State<HotelRestaurantListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hotels & Restaurants"),
+        title:  const Text("Hotels & Restaurants"),
         actions: [
           IconButton(
             icon: const Icon(Icons.sort),

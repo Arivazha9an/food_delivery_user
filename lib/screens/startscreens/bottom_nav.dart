@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_user/screens/Orders.dart';
 import 'package:food_delivery_user/screens/homescreen.dart';
 import 'package:food_delivery_user/screens/hotel.dart';
-import 'package:food_delivery_user/screens/user_profile_screen.dart';
-import 'package:food_delivery_user/widgets/appbar.dart'; // Ensure to import your FoodAppBar
-
+import 'package:food_delivery_user/screens/user_profile.dart';
+import 'package:food_delivery_user/widgets/appbar.dart'; 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({super.key});
 
@@ -17,10 +16,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const HomePage(), // This should contain the SliverAppBar
+    const HomePage(),
     const HotelRestaurantListScreen(),
     const OrdersPage(),
-    const ProfileScreen(),
+       const ProfileScreen(),
   ];
 
   @override
@@ -33,11 +32,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       primaryColor,
       primaryColor
     ];
-    
+
     return Scaffold(
-      appBar: _selectedIndex == 0 // Show app bar for HomePage only
-          ? const FoodAppBar() // Show app bar for HomePage
-          : null, // Hide app bar for other screens
+      appBar: _selectedIndex == 0 
+          ? const FoodAppBar() 
+          : null, 
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -75,11 +74,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         Icon(
           icon,
           color: _selectedIndex == index ? colors[index] : Colors.grey,
+          size: 25,
         ),
         const SizedBox(height: 4),
         Container(
-          width: 6,
-          height: 6,
+          width: 5,
+          height: 5,
           decoration: BoxDecoration(
             color: _selectedIndex == index ? colors[index] : Colors.transparent,
             shape: BoxShape.circle,

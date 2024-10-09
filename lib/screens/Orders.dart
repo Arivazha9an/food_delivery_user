@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_user/constants/colors.dart';
 import 'package:food_delivery_user/screens/order_tracker_screen.dart';
+import 'package:food_delivery_user/screens/payment/pay.dart';
+import 'package:food_delivery_user/widgets/button.dart';
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
@@ -50,7 +53,10 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Orders'),
+        title: const Text(
+          'Your Orders',
+          style: TextStyle(color: white),
+        ),
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
       ),
@@ -121,23 +127,55 @@ class _OrdersPageState extends State<OrdersPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
               children: [
-                const Text(
-                  'Total Price:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Total Price:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      ' ₹${getTotalPrice().toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  ' ₹${getTotalPrice().toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                const SizedBox(
+                  height: 10,
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Proceed to pay '),
+                    const SizedBox(
+                      width: 70,
+                    ),
+                    Container(
+                      height: 40,
+                      child: CustomTextButton(
+                          title: 'pay',
+                          width: 120,
+                          background: Theme.of(context).primaryColor,
+                          textColor: white,
+                          fontSize: 20,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PaymentScreen()),
+                            );
+                          }),
+                    )
+                  ],
+                )
               ],
             ),
           ),

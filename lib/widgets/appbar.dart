@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_user/screens/user_profile_screen.dart';
 
 class FoodAppBar extends StatelessWidget implements PreferredSizeWidget {
   const FoodAppBar({Key? key}) : super(key: key);
@@ -16,12 +17,25 @@ class FoodAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        IconButton(
-          icon: const Icon(Icons.account_circle, color: Colors.white),
-          onPressed: () {
-            // Add your profile action here
+        InkWell(
+          onTap: () {
+Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const UserProfileScreen(
+                
+                  ),
+                ),
+              );
+
           },
-        ),
+          child: const Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: CircleAvatar(
+                radius: 15,
+                backgroundImage:
+                    AssetImage('assets/images/profile_picture.jpg')),
+          ),
+        )
       ],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(10.0), // Space below the app bar

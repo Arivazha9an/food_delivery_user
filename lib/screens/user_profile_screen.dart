@@ -1,59 +1,120 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_user/constants/colors.dart';
 
-class ProfileScreen extends StatelessWidget {
-
-  
-  const ProfileScreen({super.key});
+class UserProfileScreen extends StatelessWidget {
+  const UserProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+ //   var w = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
           "Profile",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              fontSize: 25, fontWeight: FontWeight.w500, color: white),
         ),
         backgroundColor: Theme.of(context).primaryColor,
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.logout,
-                color: errorColor,
-              ))
-        ],
+        // actions: [
+        //   PopupMenuButton<String>(
+        //     icon: const Icon(CupertinoIcons.ellipsis_vertical),
+        //     onSelected: (value) {
+        //       switch (value) {
+        //         case 'Edit Profile':
+        //           // Implement edit profile action
+        //           break;
+        //         case 'Settings':
+        //           // Implement settings action
+        //           break;
+        //         case 'Help':
+        //           // Implement help action
+        //           break;
+        //         case 'Logout':
+        //           // Implement logout action
+        //           break;
+        //       }
+        //     },
+        //     itemBuilder: (BuildContext context) {
+        //       return [
+        //         const PopupMenuItem<String>(
+        //           value: 'Edit Profile',
+        //           child: Row(
+        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //             children: [
+        //               Text('Edit'),
+        //               Icon(
+        //                 Icons.edit,
+        //                 color: primaryLight,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         const PopupMenuItem<String>(
+        //           value: 'Settings',
+        //           child: Row(
+        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //             children: [
+        //               Text('Settings'),
+        //               Icon(
+        //                 Icons.settings,
+        //                 color: lightBlack,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         const PopupMenuItem<String>(
+        //           value: 'Help',
+        //           child: Row(
+        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //             children: [
+        //               Text('Help'),
+        //               Icon(
+        //                 Icons.help,
+        //                 color: lightBlack,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         const PopupMenuItem<String>(
+        //           value: 'Logout',
+        //           child: Row(
+        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //             children: [
+        //               Text('Log Out'),
+        //               Icon(
+        //                 Icons.logout,
+        //                 color: errorColor,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       ];
+        //     },
+        //   )
+        // ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Stack(
+             Stack(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 62.5,
-                  backgroundColor: primaryLight,
-                  child: CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child:const CircleAvatar(
                     radius: 60,
                     backgroundImage:
                         AssetImage('assets/images/profile_picture.jpg'),
                   ),
                 ),
-                // Positioned(
-                //   bottom: 0,
-                //   right: 0,
-                //   child: IconButton(
-                //     icon: Icon(Icons.camera_alt,
-                //         color: Theme.of(context).primaryColor),
-                //     onPressed: () {},
-                //   ),
-                // ),
               ],
             ),
             const SizedBox(height: 20),
-            buildProfileField("Username", "John Doe", Icons.person, context),
+            buildProfileField("Username", "Weeknd", Icons.person, context),
             buildProfileField(
                 "Email", "john.doe@example.com", Icons.email, context),
             buildProfileField(

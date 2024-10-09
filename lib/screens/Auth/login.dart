@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_user/screens/Auth/registration_screen.dart';
+import 'package:food_delivery_user/screens/Auth/OTP.dart';
 import 'package:food_delivery_user/screens/startscreens/IntroScreen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -51,7 +51,7 @@ class LoginScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        IntroScreen(), // Replace with the screen you want to navigate to
+                        IntroScreen(),
                   ),
                 );
               },
@@ -74,8 +74,7 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegistrationScreen()),
+                      MaterialPageRoute(builder: (context) => const OTPSendScreen()),
                     );
                   },
                   child: const Text('Sign Up'),
