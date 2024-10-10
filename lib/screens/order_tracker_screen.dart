@@ -55,7 +55,7 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
   final String deliveryStatus = 'Your food is on the way!';
   String estimatedTime = '';
   LatLng? deliveryLocation;
-  final LatLng restaurantLocation = const LatLng(10.3942, 78.8262);
+  final LatLng restaurantLocation = const LatLng(10.294346,79.200370);
   final double averageSpeed = 40.0;
   String speed = "Speed: 0.0 m/s";
   late StreamSubscription<Position> positionStream;
@@ -212,52 +212,40 @@ class _DeliveryStatusPageState extends State<DeliveryStatusPage> {
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     ),
-                    MarkerLayer(
-                      markers: [
-                        Marker(
-                          width: 80.0,
-                          height: 80.0,
-                          point: deliveryLocation!,
-                          child: polylinePoints.length > 1
-                              ? Transform.rotate(
-                                  angle: calculateBearing(deliveryLocation!,
-                                          polylinePoints[1]) *
-                                      pi /
-                                      360, // Convert degrees to radians
-                                  child: SizedBox(
-                                    width: 35.0,
-                                    height: 35.0,
-                                    child: lottie.Lottie.asset(
-                                      'assets/animations/map.json', // Your Lottie animation path
-                                      repeat: true,
-                                      reverse: true,
-                                      animate: true,
-                                    ),
-                                  ),
-                                )
-                              : SizedBox(
-                                  width: 40.0,
-                                  height: 40.0,
-                                  child: lottie.Lottie.asset(
-                                    'assets/animations/map.json', // Default animation if no route is available
-                                    repeat: true,
-                                    reverse: true,
-                                    animate: true,
-                                  ),
-                                ),
-                        ),
-                        Marker(
-                          width: 40.0,
-                          height: 40.0,
-                          point: restaurantLocation,
-                          child: const Icon(
-                            Icons.person_pin_circle_rounded,
-                            color: Colors.blue,
-                            size: 40.0,
-                          ),
-                        ),
-                      ],
-                    ),
+                 MarkerLayer(
+  markers: [
+    Marker(
+      width: 80.0,
+      height: 80.0,
+      point: deliveryLocation!,
+      child: Transform.rotate(
+        // Always calculate the bearing from current location to destination
+        angle: calculateBearing(deliveryLocation!,restaurantLocation) * pi / 180, // Convert to radians
+        child: SizedBox(
+          width: 35.0,
+          height: 35.0,
+          child: lottie.Lottie.asset(
+            'assets/animations/map.json', // Your Lottie animation path
+            repeat: true,
+            reverse: true,
+            animate: true,
+          ),
+        ),
+      ),
+    ),
+    Marker(
+      width: 40.0,
+      height: 40.0,
+      point: restaurantLocation,
+      child: const Icon(
+        Icons.person_pin_circle_rounded,
+        color: Colors.blue,
+        size: 40.0,
+      ),
+    ),
+  ],
+),
+
                     // Polyline Layer (road-following line)
                     PolylineLayer(
                       polylines: [
